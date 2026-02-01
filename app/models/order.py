@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, func, Tabl
 from sqlalchemy.orm import relationship
 from app.db.session import Base
 
-# tabla de asociación order_items (simplificada)
+# order_items association table (simplified)
 order_items = Table(
     "order_items",
     Base.metadata,
@@ -11,7 +11,7 @@ order_items = Table(
     Column("quantity", Integer, nullable=False, default=1),
 )
 
-# modelo Order
+# Order model
 class Order(Base):
     __tablename__ = "orders"
     id = Column(Integer, primary_key=True, index=True)
@@ -19,5 +19,5 @@ class Order(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
-    # relación con la tabla Item a través de la tabla de asociación order_items
+    # Relationship with Item table through order_items association table
     items = relationship("Item", secondary=order_items)

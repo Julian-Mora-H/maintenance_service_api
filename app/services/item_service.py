@@ -6,13 +6,13 @@ class ItemService:
     def create_item(data) -> object:
         session = SessionLocal()
         try:
-            # importar aquí evita ciclos en la importación de módulos
+            # Local import avoids module import cycles
             from app.models.item import Item
             item = Item(**data)
             session.add(item)
             session.commit()
             session.refresh(item)
-            # Convertir a dict MIENTRAS la sesión esté abierta
+            # Convert to dict while the session is open
             result = {
                 "id": item.id,
                 "name": item.name,
@@ -38,9 +38,9 @@ class ItemService:
         try:
             from app.models.item import Item
             from app.models.category import Category
-            # LEFT JOIN explícito
+            # Explicit LEFT JOIN
             items = session.query(Item).outerjoin(Category).all()
-            # Convertir a dict mientras la sesión esté abierta
+            # Convert to dict while the session is open
             return [
                 {
                     "id": item.id,
@@ -72,7 +72,7 @@ class ItemService:
                     setattr(item, key, value)
             session.commit()
             session.refresh(item)
-            # Convertir a dict MIENTRAS la sesión esté abierta
+            # Convert to dict while the session is open
             result = {
                 "id": item.id,
                 "name": item.name,

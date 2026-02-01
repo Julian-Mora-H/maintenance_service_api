@@ -1,7 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
-    # leer .env
+    # Read .env
     model_config = SettingsConfigDict(env_file=".env")
 
     PROJECT_NAME: str = "Maintenance Service API"

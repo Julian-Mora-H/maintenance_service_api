@@ -4,14 +4,14 @@ import logging
 import asyncio
 from typing import Callable, Any
 
-# Logger con nivel INFO visible en consola
+# Logger with INFO level visible in console
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def measure_time(func: Callable[..., Any]) -> Callable[..., Any]:
     """
-    Decorador que mide y registra el tiempo de ejecución de la función.
-    Soporta funciones síncronas y asíncronas (async def).
+    Decorator that measures and logs function execution time.
+    Supports sync and async functions (async def).
     """
     if asyncio.iscoroutinefunction(func):
         @functools.wraps(func)

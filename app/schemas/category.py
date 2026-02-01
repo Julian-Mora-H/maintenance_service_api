@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 
 class CategoryBase(BaseModel):
-    name: str = Field(..., example="Filtros")
+    name: str = Field(..., json_schema_extra={"example": "Filtros"})
 
 class CategoryCreate(CategoryBase):
     pass

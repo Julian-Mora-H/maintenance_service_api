@@ -9,7 +9,7 @@ class OrderItem(BaseModel):
 class OrderCreate(BaseModel):
     report: str
     items: List[OrderItem]
-    request_id: Optional[str] = None # Para la clave de idempotencia
+    request_id: Optional[str] = None  # For idempotency key
 
 class OrderRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)

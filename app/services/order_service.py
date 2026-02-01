@@ -9,12 +9,12 @@ class OrderService:
         
         session = SessionLocal()
         try:
-            # import locales para evitar import cycles
+            # Local imports to avoid import cycles
             from app.models.order import Order, order_items
             from app.models.item import Item
             from app.models.idempotency import IdempotencyKey
 
-            # Verificar idempotencia previa
+            # Check previous idempotency
             if request_key:
                 existing = (
                     session.query(IdempotencyKey)
@@ -22,9 +22,9 @@ class OrderService:
                     .first()
                 )
                 if existing and existing.resource_id:
-                    # devolver la orden existente sin crear nada
+                    # Return existing order without creating a new one
                     existing_order = session.get(Order, existing.resource_id)
-                    # Obtener los items de la orden
+                    # Fetch order items
                     from sqlalchemy import select
                     items_query = session.execute(
                         select(order_items).where(order_items.c.order_id == existing_order.id)
@@ -40,41 +40,41 @@ class OrderService:
                     return result, False
 
             try:
-                # crear orden
+                # Create order
                 order = Order(report=report)
                 session.add(order)
-                session.flush()  # obtiene order.id
+                session.flush()  # gets order.id
 
-                # vincular items (tabla association)
+                # Link items (association table)
                 for it in items_payload:
                     item_id = it.get("item_id")
                     qty = it.get("quantity", 1)
                     item = session.get(Item, item_id)
                     if item is None:
-                        # Al lanzar se hará rollback
+                        # Raising triggers a rollback
                         raise ValueError(f"Item {item_id} not found")
-                    # insertar en tabla order_items
+                    # Insert into order_items table
                     session.execute(
                         order_items.insert().values(order_id=order.id, item_id=item.id, quantity=qty)
                     )
 
-                # Registrar clave de idempotencia
+                # Register idempotency key
                 if request_key:
                     idemp = IdempotencyKey(
                         request_key=request_key, resource_type="order", resource_id=order.id
                     )
                     session.add(idemp)
 
-                # Commit la transacción
+                # Commit transaction
                 session.commit()
                 session.refresh(order)
-                # Obtener los items de la orden
+                # Fetch order items
                 from sqlalchemy import select
                 items_query = session.execute(
                     select(order_items).where(order_items.c.order_id == order.id)
                 ).fetchall()
                 
-                # Convertir a dict MIENTRAS la sesión esté abierta
+                # Convert to dict while the session is open
                 result = {
                     "id": order.id,
                     "report": order.report,
@@ -86,7 +86,7 @@ class OrderService:
                 return result, True
 
             except IntegrityError as ie:
-                # Puede ocurrir si dos peticiones concurrentes intentan insertar la misma idempotency key
+                # Can happen if concurrent requests insert the same idempotency key
                 session.rollback()
                 if request_key:
                     existing = (
@@ -96,12 +96,12 @@ class OrderService:
                     )
                     if existing and existing.resource_id:
                         existing_order = session.get(Order, existing.resource_id)
-                        # Obtener los items de la orden
+                        # Fetch order items
                         from sqlalchemy import select
                         items_query = session.execute(
                             select(order_items).where(order_items.c.order_id == existing_order.id)
                         ).fetchall()
-                        # Convertir a dict
+                        # Convert to dict
                         result = {
                             "id": existing_order.id,
                             "report": existing_order.report,
@@ -111,7 +111,7 @@ class OrderService:
                             ]
                         }
                         return result, False
-                # si no es por idempotencia, propagar
+                # If not idempotency-related, re-raise
                 raise ie
 
         except SQLAlchemyError:
@@ -123,7 +123,7 @@ class OrderService:
     @staticmethod
     def get_order(order_id: int) -> Optional[object]:
         """
-        Recupera una orden por id (devuelve objeto ORM o None).
+        Retrieve an order by id (returns ORM object or None).
         """
         session = SessionLocal()
         try:
@@ -136,7 +136,7 @@ class OrderService:
     @staticmethod
     def list_orders():
         """
-        Lista todas las órdenes con sus items.
+        List all orders with their items.
         """
         session = SessionLocal()
         try:
@@ -145,7 +145,7 @@ class OrderService:
             
             orders = session.query(Order).all()
             
-            # Convertir a list de dicts MIENTRAS la sesión esté abierta
+            # Convert to list of dicts while the session is open
             result = []
             for order in orders:
                 items_query = session.execute(

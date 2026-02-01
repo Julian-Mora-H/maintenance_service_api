@@ -8,17 +8,17 @@ class CategoryRead(BaseModel):
 
 
 class ItemBase(BaseModel):
-    name: str = Field(..., example="Filtro de Aire")
-    sku: str = Field(..., example="SKU-3126")
-    price: float = Field(..., example=49.99)
-    stock: int = Field(..., example=100)
+    name: str = Field(..., json_schema_extra={"example": "Filtro de Aire"})
+    sku: str = Field(..., json_schema_extra={"example": "SKU-3126"})
+    price: float = Field(..., json_schema_extra={"example": 49.99})
+    stock: int = Field(..., json_schema_extra={"example": 100})
     category_id: Optional[int] = None
 
 class ItemCreate(ItemBase):
     pass
 
 class ItemUpdate(BaseModel):
-    # Todos opcionales para permitir PATCH parcial
+    # All optional to allow partial PATCH
     price: Optional[float] = None
     stock: Optional[int] = None
 
