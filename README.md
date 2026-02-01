@@ -300,6 +300,3 @@ Maintenance_Service_API/
 └── requirements.txt
 ```
 
-## 📝 Licencia
-
-MIT
