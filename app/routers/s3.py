@@ -6,7 +6,7 @@ from pydantic import BaseModel
 router = APIRouter()
 
 class MaintenanceImageSimulation(BaseModel):
-    """Simulación de datos para subida de imagen"""
+    """Simulation payload for image upload"""
     image_name: str
     maintenance_id: int
 
@@ -14,9 +14,9 @@ class MaintenanceImageSimulation(BaseModel):
 @measure_time
 def simulate_upload_maintenance_image(data: MaintenanceImageSimulation):
     """
-    SIMULA la subida de una imagen de mantenimiento a S3.
+    Simulates uploading a maintenance image to S3.
 
-    No requiere archivo real, solo demuestra la lógica con boto3.
+    No real file required, only demonstrates boto3 logic.
     """
     try:
         result = s3_service.simulate_upload_maintenance_image(
@@ -40,9 +40,9 @@ def simulate_upload_maintenance_image(data: MaintenanceImageSimulation):
 @measure_time
 def simulate_list_maintenance_images(maintenance_id: int):
     """
-    SIMULA la listación de imágenes de un mantenimiento en S3.
+    Simulates listing maintenance images in S3.
 
-    No accede a S3 real, solo devuelve datos simulados.
+    Does not access real S3, returns simulated data only.
     """
     try:
         result = s3_service.simulate_list_maintenance_images(maintenance_id)
@@ -58,9 +58,9 @@ def simulate_list_maintenance_images(maintenance_id: int):
 @measure_time
 def simulate_delete_maintenance_image(image_path: str):
     """
-    SIMULA la eliminación de una imagen de S3.
+    Simulates deleting an image from S3.
 
-    Demuestra manejo de excepciones sin acceder a S3 real.
+    Demonstrates exception handling without real S3 access.
     """
     try:
         result = s3_service.simulate_delete_maintenance_image(image_path)
@@ -81,9 +81,9 @@ def simulate_delete_maintenance_image(image_path: str):
 @measure_time
 def get_bucket_info():
     """
-    Obtiene información del bucket S3 configurado.
+    Retrieves info for the configured S3 bucket.
 
-    Demuestra la conexión real a AWS y manejo de excepciones.
+    Demonstrates real AWS connection and exception handling.
     """
     try:
         result = s3_service.get_bucket_info()
