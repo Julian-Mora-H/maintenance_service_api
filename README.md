@@ -101,6 +101,27 @@ En Swagger podrás:
 - ✅ Ver esquemas de request/response
 - ✅ Ver ejemplos de uso
 
+## ✅ Pruebas
+
+### Ejecutar pruebas unitarias
+
+```bash
+pytest
+```
+
+Si deseas usar el ejecutable del entorno virtual:
+
+```bash
+F:/PROYECTOS/CURSOS/Maintenance_Service_API/env/Scripts/python.exe -m pytest
+```
+
+### Qué se prueba
+
+- Creación y listado de categorías
+- Creación y listado de items con LEFT JOIN
+- PATCH parcial de items
+- Idempotencia en órdenes
+
 ### Endpoints Disponibles
 
 #### **Items**
