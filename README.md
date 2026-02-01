@@ -73,12 +73,12 @@ AWS_SECRET_ACCESS_KEY=tu_secret_key
 ### Iniciar el servidor
 
 ```bash
-python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
 Deberías ver algo como:
 ```
-INFO:     Uvicorn running on http://0.0.0.0:8000
+INFO:     Uvicorn running on http://127.0.0.1:8000
 INFO:     Application startup complete
 ```
 
@@ -86,14 +86,14 @@ INFO:     Application startup complete
 
 Abre tu navegador y accede a:
 ```
-http://0.0.0.0:8000/docs
+http://127.0.0.1:8000/docs
 ```
 
 ## 📚 Documentación Swagger
 
 La API está completamente documentada con **Swagger (OpenAPI)** y está disponible automáticamente en:
 
-**`http://0.0.0.0:8000/docs`**
+**`http://127.0.0.1:8000/docs`**
 
 En Swagger podrás:
 - ✅ Ver todos los endpoints disponibles
@@ -135,7 +135,7 @@ La idempotencia garantiza que **si envías la misma petición varias veces, NO s
 
 ```bash
 curl -X 'POST' \
-  'http://0.0.0.0:8000/router/orders/' \
+  'http://127.0.0.1:8000/router/orders/' \
   -H 'Idempotency-Key: abc123' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -149,7 +149,7 @@ curl -X 'POST' \
 
 ```bash
 curl -X 'POST' \
-  'http://0.0.0.0:8000/router/orders/' \
+  'http://127.0.0.1:8000/router/orders/' \
   -H 'Content-Type: application/json' \
   -d '{
     "report": "Mantenimiento Preventivo",

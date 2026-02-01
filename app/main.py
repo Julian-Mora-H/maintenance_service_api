@@ -15,7 +15,7 @@ def create_app():
     async def on_startup():
         Base.metadata.create_all(bind=engine)
         # Abrir docs en el navegador después de 1 segundo
-        threading.Timer(1.0, lambda: webbrowser.open("http://0.0.0.0:8000/docs")).start()
+        threading.Timer(1.0, lambda: webbrowser.open("http://127.0.0.1:8000/docs")).start()
 
     return app
 
