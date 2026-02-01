@@ -48,7 +48,7 @@ pip install -r requirements.txt
 
 Si no tienes `requirements.txt`, instala manualmente:
 ```bash
-pip install fastapi uvicorn sqlalchemy pydantic-settings python-dotenv boto3
+pip install fastapi uvicorn sqlalchemy pydantic-settings python-dotenv boto3 python-multipart pytest httpx
 ```
 
 ### 4. Variables de configuración (opcional)
@@ -212,7 +212,7 @@ Implementa lógica de conexión a AWS S3 usando **boto3** con simulación de ope
 
 **1. Simular subida de imagen:**
 ```json
-POST /api/v1/s3/simulate-upload-image
+POST /router/s3/simulate-upload-image
 {
   "image_name": "IMG001.jpg",
   "maintenance_id": 1
@@ -229,7 +229,7 @@ Respuesta:
 
 **2. Listar imágenes simuladas:**
 ```
-GET /api/v1/s3/simulate-list-images/1
+GET /router/s3/simulate-list-images/1
 
 Respuesta:
 {
@@ -247,7 +247,7 @@ Respuesta:
 
 **3. Obtener información del bucket:**
 ```
-GET /api/v1/s3/bucket-info
+GET /router/s3/bucket-info
 
 Respuesta:
 {
@@ -260,7 +260,7 @@ Respuesta:
 
 ### Ubicación del código
 - Servicio: [app/services/s3_service.py](app/services/s3_service.py)
-- Endpoints: [app/api/v1/endpoints/s3.py](app/api/v1/endpoints/s3.py)
+- Endpoints: [app/routers/s3.py](app/routers/s3.py)
 
 ## 📁 Estructura del Proyecto
 
@@ -279,11 +279,11 @@ Maintenance_Service_API/
 │   │   ├── category.py
 │   │   ├── order.py
 │   │   └── idempotency.py
-    ├── routers/
-│   │       ├── items.py
-│   │       ├── categories.py
-│   │       ├── orders.py
-│   │       └── s3.py
+  │   ├── routers/
+  │   │   ├── items.py
+  │   │   ├── categories.py
+  │   │   ├── orders.py
+  │   │   └── s3.py
 │   ├── schemas/
 │   │   ├── item.py
 │   │   ├── category.py
