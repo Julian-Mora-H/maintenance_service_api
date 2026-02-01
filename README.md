@@ -269,11 +269,6 @@ Maintenance_Service_API/
 ├── app/
 │   ├── api/
 │   │   └── v1/
-│   │       ├── endpoints/
-│   │       │   ├── items.py
-│   │       │   ├── categories.py
-│   │       │   ├── orders.py
-│   │       │   └── s3.py
 │   │       └── api.py
 │   ├── core/
 │   │   └── config.py
@@ -284,6 +279,11 @@ Maintenance_Service_API/
 │   │   ├── category.py
 │   │   ├── order.py
 │   │   └── idempotency.py
+    ├── routers/
+│   │       ├── items.py
+│   │       ├── categories.py
+│   │       ├── orders.py
+│   │       └── s3.py
 │   ├── schemas/
 │   │   ├── item.py
 │   │   ├── category.py
