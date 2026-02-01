@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.v1.endpoints import items, orders, categories, s3
+from app.routers import items, orders, categories, s3
 
 api_router = APIRouter()
 api_router.include_router(items.router, prefix="/items", tags=["items"])

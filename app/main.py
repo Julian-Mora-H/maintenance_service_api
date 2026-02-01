@@ -9,7 +9,7 @@ import threading
 
 def create_app():
     app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
-    app.include_router(api_router, prefix="/api/v1")
+    app.include_router(api_router, prefix="/router")
 
     @app.on_event("startup")
     async def on_startup():

@@ -51,9 +51,10 @@ Si no tienes `requirements.txt`, instala manualmente:
 pip install fastapi uvicorn sqlalchemy pydantic-settings python-dotenv boto3
 ```
 
-### 4. Configurar variables de entorno
+### 4. Variables de configuración (opcional)
 
-Crea un archivo `.env` en la raíz del proyecto:
+No es necesario crear `.env` porque los valores por defecto están en [app/core/config.py](app/core/config.py).
+Solo crea `.env` si quieres sobrescribirlos:
 
 ```env
 PROJECT_NAME=Maintenance Service API
@@ -103,24 +104,24 @@ En Swagger podrás:
 ### Endpoints Disponibles
 
 #### **Items**
-- `POST /api/v1/items/` - Crear item
-- `GET /api/v1/items/` - Listar items
-- `PATCH /api/v1/items/{item_id}` - Actualizar item
+- `POST /router/items/` - Crear item
+- `GET /router/items/` - Listar items
+- `PATCH /router/items/{item_id}` - Actualizar item
 
 #### **Categorías**
-- `POST /api/v1/categories/` - Crear categoría
-- `GET /api/v1/categories/` - Listar categorías
-- `PATCH /api/v1/categories/{category_id}` - Actualizar categoría
+- `POST /router/categories/` - Crear categoría
+- `GET /router/categories/` - Listar categorías
+- `PATCH /router/categories/{category_id}` - Actualizar categoría
 
 #### **Órdenes**
-- `POST /api/v1/orders/` - Crear orden (con **idempotencia**)
-- `GET /api/v1/orders/` - Listar órdenes
+- `POST /router/orders/` - Crear orden (con **idempotencia**)
+- `GET /router/orders/` - Listar órdenes
 
 #### **S3 (Mantenimiento - Simulado)**
-- `POST /api/v1/s3/simulate-upload-image` - Simular subida de imagen
-- `GET /api/v1/s3/simulate-list-images/{maintenance_id}` - Listar imágenes simuladas
-- `POST /api/v1/s3/simulate-delete-image` - Simular eliminación de imagen
-- `GET /api/v1/s3/bucket-info` - Obtener información del bucket
+- `POST /router/s3/simulate-upload-image` - Simular subida de imagen
+- `GET /router/s3/simulate-list-images/{maintenance_id}` - Listar imágenes simuladas
+- `POST /router/s3/simulate-delete-image` - Simular eliminación de imagen
+- `GET /router/s3/bucket-info` - Obtener información del bucket
 
 ## 🔐 Idempotencia en Órdenes
 
@@ -134,7 +135,7 @@ La idempotencia garantiza que **si envías la misma petición varias veces, NO s
 
 ```bash
 curl -X 'POST' \
-  'http://0.0.0.0:8000/api/v1/orders/' \
+  'http://0.0.0.0:8000/router/orders/' \
   -H 'Idempotency-Key: abc123' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -148,7 +149,7 @@ curl -X 'POST' \
 
 ```bash
 curl -X 'POST' \
-  'http://0.0.0.0:8000/api/v1/orders/' \
+  'http://0.0.0.0:8000/router/orders/' \
   -H 'Content-Type: application/json' \
   -d '{
     "report": "Mantenimiento Preventivo",
@@ -161,21 +162,21 @@ curl -X 'POST' \
 
 **Petición 1** - Primera llamada (crea la orden):
 ```bash
-POST /api/v1/orders/
+POST /router/orders/
 Header: Idempotency-Key: xyz789
 → Respuesta: 201 Created, order_id: 1
 ```
 
 **Petición 2** - Misma `Idempotency-Key` (retorna la MISMA orden):
 ```bash
-POST /api/v1/orders/
+POST /router/orders/
 Header: Idempotency-Key: xyz789
 → Respuesta: 201 Created, order_id: 1 (SIN DUPLICAR)
 ```
 
 **Petición 3** - Diferente `Idempotency-Key` (crea nueva orden):
 ```bash
-POST /api/v1/orders/
+POST /router/orders/
 Header: Idempotency-Key: abc999
 → Respuesta: 201 Created, order_id: 2 (nueva orden)
 ```
